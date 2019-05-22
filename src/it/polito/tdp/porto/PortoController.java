@@ -1,6 +1,7 @@
 package it.polito.tdp.porto;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,18 +18,18 @@ import javafx.scene.control.TextArea;
 public class PortoController {
 	
 	Model model = new Model();
-	Map<Integer,Author> idMap;
+	List<Author> lista;
 	
 	public void setModel(Model model) {
 		
 		this.model=model;
-		idMap = new HashMap<>();
 		
-		List<Author> lista = this.model.getAllAutori(idMap);
+		this.lista = this.model.getAllAutori();
 		Collections.sort(lista);
 		
 		boxPrimo.getItems().addAll(lista);
-		boxSecondo.getItems().addAll(lista);
+		
+		this.model.creaGrafo();
 	}
 
     @FXML
@@ -49,6 +50,28 @@ public class PortoController {
     @FXML
     void handleCoautori(ActionEvent event) {
 
+    	txtResult.clear();
+    	
+    	Author autore = boxPrimo.getValue();
+    	
+    	if (autore!=null) {
+    	List<Author> vicini = model.getVicini(autore);
+    	
+    	for (Author a : vicini) {
+    	    txtResult.appendText(a.toString()+"\n");
+    	    }
+    	
+    	//Aggiungo i NON co-autori al box 2
+    	List<Author> lista2 = new ArrayList<>();
+    	for (Author a: this.lista) {
+    		if ( !vicini.contains(a) ) lista2.add(a);
+    	}
+    	boxSecondo.getItems().clear();
+    	boxSecondo.getItems().addAll(lista2);
+    	
+    	}
+    	else txtResult.appendText("Selezionare un autore!\n");
+    	
     }
 
     @FXML

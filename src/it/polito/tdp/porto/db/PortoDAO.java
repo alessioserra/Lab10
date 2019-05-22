@@ -64,6 +64,7 @@ public class PortoDAO {
 
 				Author autore = new Author(rs.getInt("id"), rs.getString("lastname"), rs.getString("firstname"));
 				res.add(autore);
+				
 				idMap.put(rs.getInt("id"), autore);
 			}
 
@@ -105,7 +106,7 @@ public class PortoDAO {
 	
 	public List<Accoppiamenti> getArchiGrafo(){
 		
-		final String sql = "SELECT c1.authorid AS id1, c2.authorid AS id2 FROM creator c1, creator c2 WHERE c1.eprintid=c2.eprintid AND c1.authorid>c2.authorid";
+		final String sql = "SELECT DISTINCT c1.authorid AS id1, c2.authorid AS id2 FROM creator c1, creator c2 WHERE c1.eprintid=c2.eprintid AND c1.authorid>c2.authorid";
 		List<Accoppiamenti> res = new ArrayList<>();
 		
 		try {
@@ -117,6 +118,8 @@ public class PortoDAO {
 
 			while (rs.next()) {
 				
+				Accoppiamenti a = new Accoppiamenti(rs.getInt("id1"), rs.getInt("id2"));
+				res.add(a);
 				
 			}
 

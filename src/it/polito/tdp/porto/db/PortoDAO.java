@@ -104,9 +104,40 @@ public class PortoDAO {
 		}
 	}
 	
+	/**
+	 * MEtodo per ottenere tutti gli articoli
+	 * @param mappaArticoli
+	 * @return
+	 */
+	public List<Paper> getAllArticoli(Map<Integer, Paper> mappaArticoli) {
+
+		final String sql = "SELECT * FROM paper";
+		List<Paper> paper = new ArrayList<>();
+
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				Paper p = new Paper(rs.getInt("eprintid"), rs.getString("title"), rs.getString("issn"),
+						rs.getString("publication"), rs.getString("type"), rs.getString("types"));
+				paper.add(p);
+				mappaArticoli.put(rs.getInt("eprintid"), p);
+			}
+
+			return paper;
+
+		} catch (SQLException e) {
+			 e.printStackTrace();
+			throw new RuntimeException("Errore Db",e);
+		}
+	}
+	
 	public List<Accoppiamenti> getArchiGrafo(){
 		
-		final String sql = "SELECT DISTINCT c1.authorid AS id1, c2.authorid AS id2 FROM creator c1, creator c2 WHERE c1.eprintid=c2.eprintid AND c1.authorid>c2.authorid";
+		final String sql = "SELECT DISTINCT c1.eprintid AS idA, c1.authorid AS id1, c2.authorid AS id2 FROM creator c1, creator c2 WHERE c1.eprintid=c2.eprintid AND c1.authorid>c2.authorid";
 		List<Accoppiamenti> res = new ArrayList<>();
 		
 		try {
@@ -118,9 +149,8 @@ public class PortoDAO {
 
 			while (rs.next()) {
 				
-				Accoppiamenti a = new Accoppiamenti(rs.getInt("id1"), rs.getInt("id2"));
-				res.add(a);
-				
+				Accoppiamenti a = new Accoppiamenti(rs.getInt("id1"), rs.getInt("id2"),rs.getInt("idA"));
+				res.add(a);	
 			}
 
 			return res;

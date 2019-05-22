@@ -4,11 +4,13 @@ public class Accoppiamenti {
 	
 	private int id1;
 	private int id2;
+	int idArticolo;
 	
-	public Accoppiamenti(int id1, int id2) {
+	public Accoppiamenti(int id1, int id2,int idArticolo) {
 
 		this.id1 = id1;
 		this.id2 = id2;
+		this.idArticolo = idArticolo;
 	}
 
 	public int getId1() {
@@ -17,6 +19,10 @@ public class Accoppiamenti {
 
 	public int getId2() {
 		return id2;
+	}
+	
+	public int getIdArticolo() {
+		return idArticolo;
 	}
 
 	@Override

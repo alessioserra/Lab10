@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.porto.model.Author;
 import it.polito.tdp.porto.model.Model;
+import it.polito.tdp.porto.model.Paper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -76,7 +77,20 @@ public class PortoController {
 
     @FXML
     void handleSequenza(ActionEvent event) {
-
+    	
+    	txtResult.clear();
+    	
+    	Author a1 = boxPrimo.getValue();
+    	Author a2 = boxSecondo.getValue();
+    	
+    	if ( a1!= null && a2!=null)  {
+    		List<Paper> list = model.getCamminoMinimo(a1, a2);
+    	
+    	
+    	for (Paper p : list) txtResult.appendText(p.toString()+"\n");
+    	
+    	}
+    	else txtResult.appendText("Selezionare 2 autori!");
     }
 
     @FXML

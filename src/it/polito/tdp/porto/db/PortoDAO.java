@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.porto.model.Accoppiamenti;
 import it.polito.tdp.porto.model.Author;
@@ -46,7 +47,7 @@ public class PortoDAO {
 	 * @param id
 	 * @return
 	 */
-	public List<Author> getAllAutori() {
+	public List<Author> getAllAutori(Map<Integer,Author> idMap) {
 
 		final String sql = "SELECT * FROM author";
 		List<Author> res = new ArrayList<>();
@@ -63,6 +64,7 @@ public class PortoDAO {
 
 				Author autore = new Author(rs.getInt("id"), rs.getString("lastname"), rs.getString("firstname"));
 				res.add(autore);
+				idMap.put(rs.getInt("id"), autore);
 			}
 
 			return res;

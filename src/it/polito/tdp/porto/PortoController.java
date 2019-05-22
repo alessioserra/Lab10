@@ -1,6 +1,10 @@
 package it.polito.tdp.porto;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.porto.model.Author;
@@ -13,11 +17,18 @@ import javafx.scene.control.TextArea;
 public class PortoController {
 	
 	Model model = new Model();
+	Map<Integer,Author> idMap;
 	
 	public void setModel(Model model) {
+		
 		this.model=model;
-		boxPrimo.getItems().addAll(this.model.getAllAutori());
-		boxSecondo.getItems().addAll(this.model.getAllAutori());
+		idMap = new HashMap<>();
+		
+		List<Author> lista = this.model.getAllAutori(idMap);
+		Collections.sort(lista);
+		
+		boxPrimo.getItems().addAll(lista);
+		boxSecondo.getItems().addAll(lista);
 	}
 
     @FXML
